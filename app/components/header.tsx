@@ -26,6 +26,7 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { miniPackagesLink, navLinks, packagesLink } from "~/constants"
 import { useSession } from "~/lib/auth-client"
+import { useCart } from "~/stores/useCart"
 import MobileMenu from "./mobile-menu"
 import { Skeleton } from "./ui/skeleton"
 import UserButton from "./user-button"
@@ -34,6 +35,8 @@ export default function Header() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { data, isPending, isRefetching } = useSession()
+
+  const { items } = useCart()
 
   // check the splat
   // /packages/*
@@ -164,9 +167,9 @@ export default function Header() {
                 <ShoppingBasketIcon className={"size-4"} />
                 <Badge
                   variant={"default"}
-                  className={"absolute -top-2.5 -right-1.5 z-10 px-0.5 text-xs"}
+                  className={"absolute -top-2.5 -right-1.5 z-10 px-1 text-xs"}
                 >
-                  2+
+                  {items.length}
                 </Badge>
               </Button>
             </li>
@@ -188,9 +191,9 @@ export default function Header() {
                 <ShoppingBasketIcon className={"size-4"} />
                 <Badge
                   variant={"default"}
-                  className={"absolute -top-2.5 -right-1.5 z-10 px-0.5 text-xs"}
+                  className={"absolute -top-2.5 -right-1.5 z-10 px-1 text-xs"}
                 >
-                  2+
+                  {items.length}
                 </Badge>
               </Button>
             </li>

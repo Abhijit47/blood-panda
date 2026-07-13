@@ -28,6 +28,7 @@ import {
   type TestItem,
 } from "~/constants/tests-data"
 import { formatCurrency, formattedCategoryName } from "~/lib/utils"
+import { useCart } from "~/stores/useCart"
 import type { Route } from "./+types/tests"
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -111,6 +112,8 @@ export default function TestsPage({ loaderData }: Route.ComponentProps) {
       clearOnDefault: true,
     })
   )
+
+  const { addItem } = useCart()
 
   return (
     <main className={"mx-auto max-w-(--breakpoint-xl) space-y-8 px-4 py-12"}>
@@ -254,7 +257,22 @@ export default function TestsPage({ loaderData }: Route.ComponentProps) {
                               </CardContent>
 
                               <CardFooter className={"py-4"}>
-                                <Button className={"w-full"} type="button">
+                                <Button
+                                  className={"w-full"}
+                                  type="button"
+                                  onClick={() =>
+                                    addItem({
+                                      item: {
+                                        id: test.id,
+                                        name: test.testName,
+                                        price: Number(test.disPrice),
+                                        quantity: 1,
+                                        image:
+                                          "https://avatar.vercel.sh/rauchg.png",
+                                      },
+                                    })
+                                  }
+                                >
                                   Add to cart
                                   <IconBasket className="size-4" />
                                 </Button>

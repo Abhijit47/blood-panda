@@ -39,6 +39,7 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { miniPackagesLink, navLinks, packagesLink } from "~/constants"
 import { signOut, useSession } from "~/lib/auth-client"
+import { useCart } from "~/stores/useCart"
 import { ModeToggle } from "./mode-toggle"
 import { Badge } from "./ui/badge"
 import { Skeleton } from "./ui/skeleton"
@@ -48,6 +49,7 @@ export default function MobileMenu() {
 
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { items } = useCart()
 
   const { data, isPending, isRefetching } = useSession()
 
@@ -219,25 +221,58 @@ export default function MobileMenu() {
 
         <SheetFooter>
           <ul className={"flex items-center gap-3 self-end"}>
-            <li>
-              <Button
-                type="button"
-                variant={"outline"}
-                size={"icon-sm"}
-                asChild
-                className={"relative"}
-              >
-                <NavLink to="/cart" viewTransition>
-                  <ShoppingBasketIcon className={"size-4"} />
-                  <Badge
-                    variant={"destructive"}
-                    className={"absolute -top-2.5 -right-1.5 px-0.5 text-xs"}
-                  >
-                    2+
-                  </Badge>
-                </NavLink>
-              </Button>
-            </li>
+            {isPending || isRefetching ? (
+              <li className={"mt-auto"}>
+                <Skeleton
+                  className={buttonVariants({
+                    size: "lg",
+                    variant: "ghost",
+                    className: "size-8 rounded-full",
+                  })}
+                />
+              </li>
+            ) : !data ? (
+              <li>
+                <Button
+                  type="button"
+                  variant={"outline"}
+                  size={"icon-sm"}
+                  asChild
+                  className={"relative"}
+                >
+                  <NavLink to="/login" viewTransition>
+                    <ShoppingBasketIcon className={"size-4"} />
+                    <Badge
+                      variant={"destructive"}
+                      className={"absolute -top-2.5 -right-1.5 px-0.5 text-xs"}
+                    >
+                      {items.length}
+                    </Badge>
+                  </NavLink>
+                </Button>
+              </li>
+            ) : (
+              <li>
+                <Button
+                  type="button"
+                  variant={"outline"}
+                  size={"icon-sm"}
+                  asChild
+                  className={"relative"}
+                >
+                  <NavLink to="/cart" viewTransition>
+                    <ShoppingBasketIcon className={"size-4"} />
+                    <Badge
+                      variant={"destructive"}
+                      className={"absolute -top-2.5 -right-1.5 px-0.5 text-xs"}
+                    >
+                      {items.length}
+                    </Badge>
+                  </NavLink>
+                </Button>
+              </li>
+            )}
+
             <li>
               <ModeToggle />
             </li>
@@ -256,7 +291,7 @@ export default function MobileMenu() {
               </Link>
             </Button>
           ) : (
-            <Button type="button">
+            <Button type="button" onClick={handleSignOut}>
               LogOut <IconLogout className={"size-4"} />
             </Button>
           )}
