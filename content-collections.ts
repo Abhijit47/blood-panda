@@ -74,6 +74,25 @@ const termsAndConditions = defineSingleton({
   },
 })
 
+const refundPolicy = defineSingleton({
+  name: "refund-policy",
+  filePath: "/app/contents/policies/refund-policy.mdx",
+  schema: policySchema,
+  transform: async (document, context) => {
+    if (document.draft) {
+      return context.skip("document is a draft")
+    }
+    const mdx = await compileMDX(context, document, {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [rehypeSlug],
+    })
+    return {
+      ...document,
+      mdx,
+    }
+  },
+})
+
 export type PostValues = z.infer<typeof postSchema>
 
 export type PostDocument = Schema<"frontmatter", typeof postSchema>
@@ -143,5 +162,5 @@ const posts = defineCollection({
 })
 
 export default defineConfig({
-  content: [posts, privacyPolicy, termsAndConditions],
+  content: [posts, privacyPolicy, termsAndConditions, refundPolicy],
 })

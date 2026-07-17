@@ -13,6 +13,7 @@ export default [
     route("contact-us", "routes/public/contact.tsx"),
     route("privacy-policy", "routes/public/privacy-policy.tsx"),
     route("terms-and-condition", "routes/public/terms-and-condition.tsx"),
+    route("refund-policy", "routes/public/refund-policy.tsx"),
 
     ...prefix("blogs", [
       index("routes/public/blogs.tsx"),
