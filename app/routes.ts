@@ -52,10 +52,16 @@ export default [
   // Save API route
   route("/api/save", "routes/api.save.ts"),
 
+  route(
+    "/api/payment/create-payment-request",
+    "routes/api/payment/create-payment-request.ts"
+  ),
+
   layout("routes/private/layout.tsx", [
     route("cart", "routes/private/cart.tsx"),
     route("profile", "routes/private/profile.tsx"),
     route("booking", "routes/private/booking.tsx", { id: "booking" }),
+    route("booking-success", "routes/private/booking-success.tsx"),
   ]),
 
   layout("routes/admin/layout.tsx", [

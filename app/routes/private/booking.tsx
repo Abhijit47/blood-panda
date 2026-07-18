@@ -1,12 +1,17 @@
+import {
+  CreateSdkOrderRequest,
+  MetaInfo,
+  PrefillUserLoginDetails,
+} from "@phonepe-pg/pg-sdk-node"
 import { Suspense } from "react"
 import { redirect } from "react-router"
 import { getTests } from "~/.server/loaders"
+import { paymentClient } from "~/.server/payment"
 import prisma from "~/.server/prisma"
 import { authContext } from "~/auth-context"
 import { BookingContextProvider } from "~/contexts/booking-context.client"
 import BookingForm from "~/features/booking/booking-form"
 import { getUserFromSession } from "~/lib/data.server"
-import type { MemberDetailsFormData } from "~/lib/validators/booking-schema"
 import type { SelectUser } from "~/types/db-types"
 import type { Route } from "./+types/booking"
 
@@ -92,69 +97,6 @@ export async function loader({ context }: Route.LoaderArgs) {
   return { user, loadAllTests, bookings }
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
-  const user = context.get(authContext)
-  const formData = (await request.json()) as MemberDetailsFormData
-  // console.log("Received data from client:", formData)
-
-  const savingData = Array.isArray(formData.memberDetails)
-    ? formData.memberDetails
-    : (Object.values(
-        formData.memberDetails
-      ) as MemberDetailsFormData["memberDetails"])
-
-  // console.log("Processed savingData:", savingData)
-
-  const preparedForSave = savingData.map((member) => ({
-    name: member.name,
-    email: member.email,
-    phone: member.phone,
-    gender: member.gender,
-    age: member.age,
-    // packages: member.testItems.map((test) => ({
-    //   id: test.id,
-    //   name: test.testName,
-    //   originalPrice: parseFloat(test.orgPrice),
-    //   discountedPrice: parseFloat(test.disPrice),
-    // })),
-  }))
-
-  try {
-    const data = await prisma.booking.update({
-      where: {
-        id: "6a26ae35-6a2a-4bba-b271-84cdc9397029",
-        userId: user.id,
-      },
-      data: {
-        members: {
-          create: [...preparedForSave],
-        },
-      },
-      include: {
-        members: true,
-      },
-    })
-
-    console.log("Booking updated successfully:", data)
-
-    return new Response(
-      JSON.stringify({ message: "Data received and processed", savingData }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-  } catch (error) {
-    return new Response(
-      JSON.stringify({ message: "Error processing data", error }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-  }
-}
-
 export function meta({}: Route.MetaArgs) {
   return [
     { title: `Booking Page` },
@@ -165,7 +107,7 @@ export function meta({}: Route.MetaArgs) {
 export function HydrateFallback({}: Route.HydrateFallbackProps) {
   return (
     <main className={"mx-auto max-w-(--breakpoint-xl) space-y-8 px-4 py-12"}>
-      <h1 className={"text-3xl font-semibold"}>Loading...</h1>
+      <h1 className={"text-3xl font-semibold"}>HydrateFallback...</h1>
     </main>
   )
 }
@@ -554,4 +496,63 @@ export default function BookingPage({ loaderData }: Route.ComponentProps) {
       </Suspense>
     </main>
   )
+}
+
+type PaymentRequestData = {
+  name: string
+  email: string
+  phone: string
+  amount: number
+  address1: string
+  address2: string
+  pincode: string
+  scheduleDate: string
+  scheduleTime: string
+  paymentMode: "ONLINE_PAYMENT"
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  const payload = (await request.json()) as PaymentRequestData
+  // console.log("Received data:", data)
+
+  const redirectUrl = import.meta.env.VITE_BETTER_AUTH_URL
+  if (!redirectUrl) {
+    throw new Error("BETTER_AUTH_URL must be set in the environment variables.")
+  }
+
+  const merchantOrderId = crypto.randomUUID()
+  const prefillUserLoginDetails = PrefillUserLoginDetails.builder().phoneNumber(
+    payload.phone
+  )
+  const metaInfo = MetaInfo.builder()
+    .udf1(payload.name)
+    .udf2(payload.email)
+    .udf3(payload.phone)
+    .udf4(payload.amount.toString())
+    .udf5(payload.address1)
+    .udf6(payload.address2)
+    .udf7(payload.pincode)
+    .udf8(payload.scheduleDate)
+    .udf9(payload.scheduleTime)
+    .udf10(payload.paymentMode)
+    .build()
+
+  // Amount in paise (100 = ₹1.00)
+  const amountInPaisa = Math.round(payload.amount * 100)
+
+  const orderRequest = CreateSdkOrderRequest.StandardCheckoutBuilder()
+    .merchantOrderId(merchantOrderId)
+    .amount(amountInPaisa)
+    // .prefillUserLoginDetails(prefillUserLoginDetails)
+    .metaInfo(metaInfo)
+    .redirectUrl(`${redirectUrl}/booking-success`)
+    .expireAfter(3600) // Expire after 1 hour
+    .message("Message that will be shown for UPI collect transaction")
+    .build()
+
+  const result = await paymentClient.pay(orderRequest)
+  throw redirect(result.redirectUrl, {
+    status: 302,
+    statusText: "Found",
+  })
 }

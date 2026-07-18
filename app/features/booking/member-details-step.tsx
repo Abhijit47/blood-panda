@@ -1,6 +1,6 @@
 import { MinusCircleIcon, PlusCircleIcon } from "lucide-react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
-import { useFetcher, useLoaderData } from "react-router"
+// import { useLoaderData } from "react-router"
 import { Button } from "~/components/ui/button"
 import {
   Card,
@@ -25,14 +25,12 @@ import { type MemberDetailsFormData } from "~/lib/validators/booking-schema"
 // import type { Route } from "../../../.react-router/types/app/routes/private/+types/booking"
 import { Separator } from "~/components/ui/separator"
 import { GenderEnums } from "~/constants"
-import type { Route } from "../../routes/private/+types/booking"
+// import type { Route } from "../../routes/private/+types/booking"
 import MembersTestItems from "./members-test-items"
 import UploadPrescription from "./upload-prescription"
 
 export default function BasicDetailsStep() {
-  const loaderData = useLoaderData<Route.ComponentProps["loaderData"]>()
-
-  const fetcher = useFetcher()
+  // const loaderData = useLoaderData<Route.ComponentProps["loaderData"]>()
 
   const form = useFormContext<MemberDetailsFormData>()
 

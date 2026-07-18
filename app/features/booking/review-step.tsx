@@ -1,6 +1,5 @@
-import { format } from "date-fns"
 import { Clock10, MapPinCheck } from "lucide-react"
-import { useFormContext, useWatch } from "react-hook-form"
+import { Controller, useFormContext, useWatch } from "react-hook-form"
 import { Button } from "~/components/ui/button"
 import {
   Card,
@@ -14,8 +13,11 @@ import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
+  FieldLegend,
+  FieldSet,
   FieldTitle,
 } from "~/components/ui/field"
 import {
@@ -27,8 +29,23 @@ import {
   ItemMedia,
   ItemTitle,
 } from "~/components/ui/item"
-import { Switch } from "~/components/ui/switch"
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group"
 import type { BookingFormData } from "~/lib/validators/booking-schema"
+
+const paymentOptions = [
+  {
+    id: crypto.randomUUID(),
+    name: "COD",
+    value: "COD",
+    description: "Pay with cash upon delivery.",
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Online Payment",
+    value: "ONLINE_PAYMENT",
+    description: "Pay securely using your credit card, debit card, or UPI.",
+  },
+]
 
 export default function ReviewStep() {
   const form = useFormContext<BookingFormData>()
@@ -89,11 +106,12 @@ export default function ReviewStep() {
                 <ItemContent>
                   <ItemTitle>1st Collection</ItemTitle>
                   <ItemDescription>
-                    {format(
-                      new Date(watchedScheduleValues?.scheduleDate),
+                    {/* {format(
+                      new Date(watchedScheduleValues?.scheduleDate) ??
+                        new Date(),
                       "dd MMM yyyy"
                     )}{" "}
-                    at {watchedScheduleValues?.slotTime}
+                    at {watchedScheduleValues?.slotTime} */}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions>
@@ -105,29 +123,52 @@ export default function ReviewStep() {
             </ItemGroup>
           </CardContent>
           <CardContent>
-            <FieldGroup className="gap-2">
-              <FieldLabel htmlFor="cod">
-                <Field orientation="horizontal">
-                  <FieldContent>
-                    <FieldTitle>COD</FieldTitle>
+            <FieldGroup>
+              <Controller
+                name="reviewOrder.paymentMode"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <FieldSet data-invalid={fieldState.invalid}>
+                    <FieldLegend>Plan</FieldLegend>
                     <FieldDescription>
-                      Pay with cash upon delivery.
+                      You can upgrade or downgrade your plan at any time.
                     </FieldDescription>
-                  </FieldContent>
-                  <Switch id="cod" />
-                </Field>
-              </FieldLabel>
-              <FieldLabel htmlFor="online-payment">
-                <Field orientation="horizontal">
-                  <FieldContent>
-                    <FieldTitle>Online Payment</FieldTitle>
-                    <FieldDescription>
-                      Pay securely using your credit card, debit card, or UPI.
-                    </FieldDescription>
-                  </FieldContent>
-                  <Switch id="online-payment" defaultChecked />
-                </Field>
-              </FieldLabel>
+                    <RadioGroup
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      aria-invalid={fieldState.invalid}
+                    >
+                      {paymentOptions.map((opts) => (
+                        <FieldLabel
+                          key={opts.id}
+                          htmlFor={`form-rhf-radiogroup-${opts.id}`}
+                        >
+                          <Field
+                            orientation="horizontal"
+                            data-invalid={fieldState.invalid}
+                          >
+                            <FieldContent>
+                              <FieldTitle>{opts.name}</FieldTitle>
+                              <FieldDescription>
+                                {opts.description}
+                              </FieldDescription>
+                            </FieldContent>
+                            <RadioGroupItem
+                              value={opts.value}
+                              id={`form-rhf-radiogroup-${opts.id}`}
+                              aria-invalid={fieldState.invalid}
+                            />
+                          </Field>
+                        </FieldLabel>
+                      ))}
+                    </RadioGroup>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldSet>
+                )}
+              />
             </FieldGroup>
           </CardContent>
         </Card>
