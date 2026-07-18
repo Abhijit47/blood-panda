@@ -21,3 +21,16 @@ export type MiniPackage = {
   offerPercent: string
   extraFeatures: string[]
 }
+
+export type PaymentRequestData = {
+  name: string
+  email: string
+  phone: string
+  amount: number
+  address1: string
+  address2: string
+  pincode: string
+  scheduleDate: string
+  scheduleTime: string
+  paymentMode: "ONLINE_PAYMENT"
+}

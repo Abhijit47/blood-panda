@@ -24,7 +24,9 @@ export default [
       route(":package", "routes/public/packages/package.tsx"),
 
       ...prefix("mini-packages", [
-        route(":miniPackage", "routes/public/packages/mini-package.tsx"),
+        route(":miniPackage", "routes/public/packages/mini-package.tsx", {
+          id: "miniPackage",
+        }),
       ]),
       // index("./concerts/home.tsx"),
       // route(":city", "./concerts/city.tsx"),
@@ -51,11 +53,6 @@ export default [
 
   // Save API route
   route("/api/save", "routes/api.save.ts"),
-
-  route(
-    "/api/payment/create-payment-request",
-    "routes/api/payment/create-payment-request.ts"
-  ),
 
   layout("routes/private/layout.tsx", [
     route("cart", "routes/private/cart.tsx"),

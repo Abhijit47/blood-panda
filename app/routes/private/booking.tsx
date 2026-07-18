@@ -1,17 +1,13 @@
-import {
-  CreateSdkOrderRequest,
-  MetaInfo,
-  PrefillUserLoginDetails,
-} from "@phonepe-pg/pg-sdk-node"
 import { Suspense } from "react"
 import { redirect } from "react-router"
+import { createCheckout } from "~/.server/actions"
 import { getTests } from "~/.server/loaders"
-import { paymentClient } from "~/.server/payment"
 import prisma from "~/.server/prisma"
 import { authContext } from "~/auth-context"
 import { BookingContextProvider } from "~/contexts/booking-context.client"
 import BookingForm from "~/features/booking/booking-form"
 import { getUserFromSession } from "~/lib/data.server"
+import type { PaymentRequestData } from "~/types"
 import type { SelectUser } from "~/types/db-types"
 import type { Route } from "./+types/booking"
 
@@ -95,6 +91,22 @@ export async function loader({ context }: Route.LoaderArgs) {
   })
 
   return { user, loadAllTests, bookings }
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  const payload = (await request.json()) as PaymentRequestData
+  // console.log("Received data:", data)
+
+  const url = await createCheckout?.(payload)
+
+  if (!url) {
+    throw new Response("Failed to create checkout order", { status: 500 })
+  } else {
+    throw redirect(url, {
+      status: 302,
+      statusText: "Found",
+    })
+  }
 }
 
 export function meta({}: Route.MetaArgs) {
@@ -496,63 +508,4 @@ export default function BookingPage({ loaderData }: Route.ComponentProps) {
       </Suspense>
     </main>
   )
-}
-
-type PaymentRequestData = {
-  name: string
-  email: string
-  phone: string
-  amount: number
-  address1: string
-  address2: string
-  pincode: string
-  scheduleDate: string
-  scheduleTime: string
-  paymentMode: "ONLINE_PAYMENT"
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  const payload = (await request.json()) as PaymentRequestData
-  // console.log("Received data:", data)
-
-  const redirectUrl = import.meta.env.VITE_BETTER_AUTH_URL
-  if (!redirectUrl) {
-    throw new Error("BETTER_AUTH_URL must be set in the environment variables.")
-  }
-
-  const merchantOrderId = crypto.randomUUID()
-  const prefillUserLoginDetails = PrefillUserLoginDetails.builder().phoneNumber(
-    payload.phone
-  )
-  const metaInfo = MetaInfo.builder()
-    .udf1(payload.name)
-    .udf2(payload.email)
-    .udf3(payload.phone)
-    .udf4(payload.amount.toString())
-    .udf5(payload.address1)
-    .udf6(payload.address2)
-    .udf7(payload.pincode)
-    .udf8(payload.scheduleDate)
-    .udf9(payload.scheduleTime)
-    .udf10(payload.paymentMode)
-    .build()
-
-  // Amount in paise (100 = ₹1.00)
-  const amountInPaisa = Math.round(payload.amount * 100)
-
-  const orderRequest = CreateSdkOrderRequest.StandardCheckoutBuilder()
-    .merchantOrderId(merchantOrderId)
-    .amount(amountInPaisa)
-    // .prefillUserLoginDetails(prefillUserLoginDetails)
-    .metaInfo(metaInfo)
-    .redirectUrl(`${redirectUrl}/booking-success`)
-    .expireAfter(3600) // Expire after 1 hour
-    .message("Message that will be shown for UPI collect transaction")
-    .build()
-
-  const result = await paymentClient.pay(orderRequest)
-  throw redirect(result.redirectUrl, {
-    status: 302,
-    statusText: "Found",
-  })
 }

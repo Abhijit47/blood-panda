@@ -27,6 +27,7 @@ export default {
     "/blogs",
     "/contact-us",
     "/privacy-policy",
+    "/refund-policy",
     "/terms-and-condition",
   ],
   presets: [vercelPreset()],
