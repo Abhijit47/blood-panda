@@ -7,6 +7,7 @@ interface ViteTypeOptions {
 interface ImportMetaEnv {
   readonly VITE_THEME_COOKIE_SECRET: string
   readonly VITE_BETTER_AUTH_URL: string
+  readonly VITE_TEST_WEBHOOK_URL: string
   // more env variables...
 }
 

@@ -1,10 +1,5 @@
 import z from "zod"
-import {
-  AddressTypeEnums,
-  GenderEnums,
-  PaymentMethodEnums,
-  ScheduleStatusEnums,
-} from "~/constants"
+import { AddressTypeEnums, GenderEnums, PaymentMethodEnums } from "~/constants"
 
 export const testItemSchema = z.object({
   id: z.string(),
@@ -46,7 +41,6 @@ export const addressFormSchema = z.object({
 export const scheduleFormSchema = z.object({
   scheduleDate: z.string(),
   slotTime: z.string(),
-  scheduleStatus: z.enum(ScheduleStatusEnums).default("PENDING"),
 })
 
 export const reviewOrderSchema = z.object({

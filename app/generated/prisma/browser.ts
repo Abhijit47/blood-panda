@@ -58,25 +58,20 @@ export type SecondaryCategory = Prisma.SecondaryCategoryModel
  */
 export type BloodTest = Prisma.BloodTestModel
 /**
- * Model Package
- * 
- */
-export type Package = Prisma.PackageModel
-/**
  * Model PackageCategory
  * 
  */
 export type PackageCategory = Prisma.PackageCategoryModel
 /**
+ * Model Package
+ * 
+ */
+export type Package = Prisma.PackageModel
+/**
  * Model MiniPackage
  * 
  */
 export type MiniPackage = Prisma.MiniPackageModel
-/**
- * Model Booking
- * 
- */
-export type Booking = Prisma.BookingModel
 /**
  * Model Member
  * 
@@ -92,3 +87,18 @@ export type Address = Prisma.AddressModel
  * 
  */
 export type Schedule = Prisma.ScheduleModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model WebhookLog
+ * 
+ */
+export type WebhookLog = Prisma.WebhookLogModel

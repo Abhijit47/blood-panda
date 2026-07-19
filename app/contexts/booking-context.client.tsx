@@ -96,7 +96,6 @@ export function BookingContextProvider(props: BookingContextProviderProps) {
       schedule: {
         scheduleDate: "",
         slotTime: "",
-        scheduleStatus: "PENDING",
       },
       reviewOrder: {
         paymentMode: "COD",

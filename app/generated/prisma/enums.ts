@@ -18,6 +18,23 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
+export const Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
+
+
+export const AddressType = {
+  HOME: 'HOME',
+  OTHER: 'OTHER'
+} as const
+
+export type AddressType = (typeof AddressType)[keyof typeof AddressType]
+
+
 export const BookingStatus = {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
@@ -34,30 +51,3 @@ export const BookingType = {
 } as const
 
 export type BookingType = (typeof BookingType)[keyof typeof BookingType]
-
-
-export const Gender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER'
-} as const
-
-export type Gender = (typeof Gender)[keyof typeof Gender]
-
-
-export const AddressType = {
-  HOME: 'HOME',
-  OFFICE: 'OFFICE'
-} as const
-
-export type AddressType = (typeof AddressType)[keyof typeof AddressType]
-
-
-export const ScheduleStatus = {
-  PENDING: 'PENDING',
-  CONFIRMED: 'CONFIRMED',
-  CANCELLED: 'CANCELLED',
-  COMPLETED: 'COMPLETED'
-} as const
-
-export type ScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus]

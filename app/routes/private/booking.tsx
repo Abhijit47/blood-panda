@@ -1,13 +1,13 @@
 import { Suspense } from "react"
 import { redirect } from "react-router"
-import { createCheckout } from "~/.server/actions"
+import { createBooking, createCheckout } from "~/.server/actions"
 import { getTests } from "~/.server/loaders"
 import prisma from "~/.server/prisma"
 import { authContext } from "~/auth-context"
 import { BookingContextProvider } from "~/contexts/booking-context.client"
 import BookingForm from "~/features/booking/booking-form"
 import { getUserFromSession } from "~/lib/data.server"
-import type { PaymentRequestData } from "~/types"
+import type { BookingFormData } from "~/lib/validators/booking-schema"
 import type { SelectUser } from "~/types/db-types"
 import type { Route } from "./+types/booking"
 
@@ -93,19 +93,43 @@ export async function loader({ context }: Route.LoaderArgs) {
   return { user, loadAllTests, bookings }
 }
 
-export async function action({ request }: Route.ActionArgs) {
-  const payload = (await request.json()) as PaymentRequestData
+type BookingActionData = BookingFormData & {
+  totalPrice: number
+}
+
+export async function action({ request, context }: Route.ActionArgs) {
+  const user = context.get(authContext)
+  const body = (await request.json()) as BookingActionData
   // console.log("Received data:", data)
 
-  const url = await createCheckout?.(payload)
+  const bookingPayload = {
+    userId: user.id,
+    ...body,
+  }
+  try {
+    // create a booking record in the database and then create a checkout order request
+    const booking = await createBooking?.(bookingPayload)
+    if (!booking) {
+      throw new Response("Failed to create booking", { status: 500 })
+    }
 
-  if (!url) {
-    throw new Response("Failed to create checkout order", { status: 500 })
-  } else {
-    throw redirect(url, {
-      status: 302,
-      statusText: "Found",
-    })
+    const checkOutPayload = {
+      ...bookingPayload,
+      bookingId: booking.id,
+    }
+
+    const checkoutUrl = await createCheckout?.(checkOutPayload)
+    if (!checkoutUrl) {
+      throw new Response("Failed to create checkout order", { status: 500 })
+    } else {
+      throw redirect(checkoutUrl, {
+        status: 302,
+        statusText: "Found",
+      })
+    }
+  } catch (error) {
+    console.error("Error in booking action:", error)
+    throw new Response("Please try again later.", { status: 500 })
   }
 }
 

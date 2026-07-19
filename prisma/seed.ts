@@ -2,7 +2,32 @@ import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "../app/generated/prisma/client.js"
 
 import { readdir, readFile } from "node:fs/promises"
+import { join } from "node:path"
 import type { MiniPackage } from "~/types/index.js"
+
+const normalizeCategory = (value: string) =>
+  value
+    .trim()
+    .replace(/^['"]|['"]$/g, "")
+    .toLowerCase()
+function nameLowerUnderScore(name: string) {
+  // loop through each character in the string and replace hyphen with underscores and convert to lowercase
+
+  // handle this case: hormones, thyroid_tumor_markers (remove comma, space with uderscore, and convert to lowercase)
+  return normalizeCategory(
+    name
+      .split("")
+      .map(
+        (char) =>
+          char === "-" || char === " " || char === ","
+            ? "_"
+            : char.toLowerCase()
+        // char === " " || char === "," ? "_" : char === " " ? "_" : char
+      )
+      // .map((char) => (char === "-" ? "_" : char.toLowerCase()))
+      .join("")
+  )
+}
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -12,13 +37,41 @@ const prisma = new PrismaClient({
   adapter,
 })
 
-// const packageNames = ["silver", "gold", "platinum", "diamond", "signature"]
+const primaryCategoryFilePath = join(
+  process.cwd(),
+  "./docs/primary_category.json"
+)
+// const primaryCategoryFilePath = "../docs/primary_category.json"
+// const secondaryCategoryFilePath = "../docs/secondary_category.json"
+const secondaryCategoryFilePath = join(
+  process.cwd(),
+  "./docs/secondary_category.json"
+)
+
+const bloodTestsFilePath = join(process.cwd(), "./docs/blood_test.json")
+
+const miniPackagesFilePath = join(process.cwd(), "./docs/mini_package.json")
+
+const packagesCategoryFilePath = join(
+  process.cwd(),
+  "./docs/package_category.json"
+)
+
+const packagesFilePath = join(process.cwd(), "./docs/package_modified.json")
+
+async function readPrimaryCategoryFromFile(
+  filePath: string,
+  encoding: BufferEncoding
+) {
+  return readFile(filePath, encoding).then((res) => JSON.parse(res))
+}
 
 // read all json files only
-const filesPath = "./app/constants/mini-packages"
+const MiniPackagesfilesPath = "./app/constants/mini-packages"
+const PackagesfilesPath = "./app/constants/packages"
 
 async function readingFileFromLocal(
-  filePath: string,
+  filesPath: string,
   encoding: BufferEncoding
 ) {
   return readdir(filesPath, { withFileTypes: true }).then((files) => {
@@ -40,121 +93,222 @@ async function readingFileFromLocal(
   })
 }
 
-const prepared = [
-  {
-    id: "916cd103-20bc-48dc-a30a-0f128177bedd",
-    name: "Prenatal Screen I",
-    originalPrice: "2380",
-    discountedPrice: "1700",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "2d858d05-2a0c-4774-a885-0db7103e8b62",
-    name: "Prenatal Screen II",
-    originalPrice: "2380",
-    discountedPrice: "1700",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "38cfc812-4ac7-4dcf-bfc5-e824080f023d",
-    name: "Prenatal Screen (NIPT)",
-    originalPrice: "4900",
-    discountedPrice: "3500",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "3b94dba4-a958-4bfb-8b49-a740eb0d9a18",
-    name: "Beta HCG",
-    originalPrice: "1050",
-    discountedPrice: "750",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "44602f28-3572-46e4-b090-c44529087b18",
-    name: "AMH",
-    originalPrice: "2380",
-    discountedPrice: "1700",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "1e593d67-8ee0-405b-bba7-30a07ea8a02b",
-    name: "Progesterone",
-    originalPrice: "630",
-    discountedPrice: "450",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "e50f0c80-8a56-498e-a327-dc76e1a1a84f",
-    name: "Estradiol",
-    originalPrice: "840",
-    discountedPrice: "600",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "9a74c3af-e073-4990-9432-e89e1834918e",
-    name: "FSH",
-    originalPrice: "560",
-    discountedPrice: "400",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-  {
-    id: "d8089ca6-50c0-4dd7-bdfe-71e646d89682",
-    name: "LH",
-    originalPrice: "490",
-    discountedPrice: "350",
-    discountAmount: "30",
-    primaryCategoryId: "90884da7-d0fe-4acb-bead-fa82003c9824",
-    secondaryCategoryId: "13e21c60-f9d1-407c-9fc4-dd0a89b7caa2",
-  },
-]
-
 export async function main() {
   try {
     console.log("Start seeding ... 🌱🌱🌱")
 
-    // await prisma.$connect()
+    // console.log("prepared", prepared)
 
-    for (const plan of prepared) {
-      await prisma.bloodTest.create({
-        data: {
-          name: plan.name,
-          originalPrice: plan.originalPrice,
-          discountedPrice: plan.discountedPrice,
-          discountAmount: plan.discountAmount,
-          primaryCategoryId: plan.primaryCategoryId,
-          secondaryCategoryId: plan.secondaryCategoryId,
-        },
-      })
-    }
+    // const res1 = await readPrimaryCategoryFromFile(
+    //   primaryCategoryFilePath,
+    //   "utf-8"
+    // )
+    // const res2 = await readPrimaryCategoryFromFile(
+    //   secondaryCategoryFilePath,
+    //   "utf-8"
+    // )
+    // const res3 = await readPrimaryCategoryFromFile(bloodTestsFilePath, "utf-8")
+    // console.log("res3", res3)
 
-    // await prisma.bloodTest.create({
-    //   data: {
-    //     name: "Blood Test 1",
-    //     originalPrice: "100",
-    //     discountedPrice: "70",
-    //     discountAmount: "30",
-    //     primaryCategoryId: "",
-    //     secondaryCategoryId: "",
-    //   },
+    // const res4 = await readingFileFromLocal(filesPath, "utf-8")
+    // // console.log("res", res4)
+
+    // const res5 = (await readPrimaryCategoryFromFile(
+    //   packagesCategoryFilePath,
+    //   "utf-8"
+    // )) as {
+    //   id: string
+    //   name: string
+    //   features: string[]
+    //   createdAt: string
+    //   updatedAt: string
+    //   packageId: string
+    // }[]
+    // console.log("res5", res5)
+
+    // remove the duplicates by name
+    // const filtered = res5.filter(
+    //   (value, index, self) =>
+    //     index === self.findIndex((t) => t.name === value.name)
+    // )
+    // console.log("filtered", filtered)
+    // console.log("filtered.len", filtered.length)
+
+    // const res6 = await readingFileFromLocal(PackagesfilesPath, "utf-8")
+    // console.log("res5", JSON.stringify(res6, null, 2))
+
+    // const preparedPackages = res6.map((plan) => {
+    //   return {
+    //     name: nameLowerUnderScore(plan.fileName),
+    //   }
     // })
 
-    console.log("Seeding finished. 🌱🌱🌱")
+    // const final1 = res1.map((item: any) => ({
+    //   ...item,
+    //   name: nameLowerUnderScore(item.name),
+    // }))
+    // const final2 = res2.map((item: any) => ({
+    //   ...item,
+    //   name: nameLowerUnderScore(item.name),
+    // }))
+
+    // const prepared = res4.map((plan) => {
+    //   return {
+    //     name: nameLowerUnderScore(plan.fileName),
+    //     description:
+    //       "This package includes " +
+    //       plan.data.benefits.length +
+    //       " individual tests",
+    //     cover: "/packages-bg.png",
+    //     originalAmount: plan.data.orgPrice,
+    //     discountedAmount: plan.data.disPrice,
+    //     offerAmount: plan.data.offerPercent,
+    //     benefits: plan.data.benefits,
+    //     extraFeatures: plan.data.extraFeatures,
+    //   }
+    // })
+
+    // console.log("primaryCategoryFilePath", final1)
+    // console.log("secondaryCategoryFilePath", final2)
+
+    // const sortedPackages = await readPrimaryCategoryFromFile(
+    //   packagesFilePath,
+    //   "utf-8"
+    // )
+    // const preparedPackages = sortedPackages.map((plan: any) => {
+    //   return {
+    //     name: plan.name,
+    //     description: plan.description,
+    //     cover: plan.cover,
+    //     originalAmount: plan.originalAmount,
+    //     discountedAmount: plan.discountedAmount,
+    //     offerAmount: plan.offerAmount,
+    //     extraFeatures: plan.extraFeatures,
+    //     categoryIds: plan.category,
+    //   }
+    // })
+
+    // console.log("preparedPackages", preparedPackages)
+    // console.log("preparedPackages.len", preparedPackages.length)
+
+    // ===*******=== WORKING CODE ===*******===
+    // await prisma.$connect()
+
+    // ===== BloodTest category creation =====
+    // for (const item of final1) {
+    //   await new Promise((resolve) => setTimeout(resolve, 50))
+    //   await prisma.primaryCategory.create({
+    //     data: {
+    //       id: item.id,
+    //       name: item.name,
+    //     },
+    //   })
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    //   console.log("Created primary category:", item.name, "created.")
+    // }
+
+    // for (const item of final2) {
+    //   await new Promise((resolve) => setTimeout(resolve, 50))
+    //   await prisma.secondaryCategory.create({
+    //     data: {
+    //       id: item.id,
+    //       name: item.name,
+    //     },
+    //   })
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    //   console.log("Created secondary category:", item.name, "created.")
+    // }
+    // ===== BloodTest category creation end =====
+
+    // ===== BloodTest category creation =====
+    // for (const item of res3) {
+    //   await new Promise((resolve) => setTimeout(resolve, 50))
+    //   await prisma.bloodTest.create({
+    //     data: {
+    //       name: item.name,
+    //       originalPrice: item.originalPrice,
+    //       discountedPrice: item.discountedPrice,
+    //       discountAmount: item.discountAmount,
+    //       primaryCategoryId: item.primaryCategoryId,
+    //       secondaryCategoryId: item.secondaryCategoryId,
+    //     },
+    //   })
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    //   console.log("Created blood test:", item.name, "created.")
+    // }
+    // ===== BloodTest category creation end =====
+
+    // ===== Mini packages creation =====
+    // for (const item of prepared) {
+    //   await new Promise((resolve) => setTimeout(resolve, 50))
+    //   await prisma.miniPackage.create({
+    //     data: {
+    //       name: item.name,
+    //       description: item.description,
+    //       cover: item.cover,
+    //       benefits: item.benefits,
+    //       originalAmount: item.originalAmount,
+    //       discountedAmount: item.discountedAmount,
+    //       offerAmount: item.offerAmount,
+    //       extraFeatures: item.extraFeatures,
+    //     },
+    //   })
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    //   console.log("Created mini package:", item.name, "created.")
+    // }
+    // ===== Mini packages creation end =====
+
+    // ===== Packages category creation =====
+    // for (const item of filtered) {
+    //   await new Promise((resolve) => setTimeout(resolve, 50))
+    //   await prisma.packageCategory.create({
+    //     data: {
+    //       name: item.name,
+    //       features: item.features,
+    //     },
+    //   })
+    //   console.log("Created package category:", item.name, "created.")
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    // }
+    // ===== Packages category creation end =====
+
+    // ===== Packages creation =====
+    // for (const plan of preparedPackages) {
+    //   await new Promise((resolve) => setTimeout(resolve, 150))
+    //   await prisma.package.create({
+    //     data: {
+    //       name: plan.name,
+    //       description: plan.description,
+    //       originalAmount: plan.originalAmount,
+    //       discountedAmount: plan.discountedAmount,
+    //       offerAmount: plan.offerAmount,
+    //       extraFeatures: plan.extraFeatures,
+    //       cover: plan.cover,
+    //       packageCategories: {
+    //         connect: plan.categoryIds.map((id: string) => ({ id })),
+    //       },
+    //     },
+    //     include: {
+    //       packageCategories: true,
+    //     },
+    //   })
+    //   await new Promise((resolve) => setTimeout(resolve, 250))
+    //   console.log("Created package:", plan.name, "created.")
+    // }
+    // ===== Packages creation end=====
+
+    // for (const plan of prepared) {
+    //   await prisma.bloodTest.create({
+    //     data: {
+    //       name: plan.name,
+    //       originalPrice: plan.originalPrice,
+    //       discountedPrice: plan.discountedPrice,
+    //       discountAmount: plan.discountAmount,
+    //       primaryCategoryId: plan.primaryCategoryId,
+    //       secondaryCategoryId: plan.secondaryCategoryId,
+    //     },
+    //   })
+    // }
   } catch (error) {
     console.error("Error seeding data:", error)
     process.exit(1) // Exit the process with a failure code
@@ -163,7 +317,7 @@ export async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    // await prisma.$disconnect()
     console.log("Seeding finished. 🌱🌱🌱")
   })
   .catch(async (e) => {
@@ -171,196 +325,3 @@ main()
     await prisma.$disconnect()
     process.exit(1)
   })
-
-async function main2() {
-  const allData = (await readingFileFromLocal(filesPath, "utf-8")) as {
-    fileName: string
-    data: MiniPackage
-  }[]
-  console.log("allData", JSON.stringify(allData))
-  console.log("Start seeding ... 🌱🌱🌱")
-  // await prisma.$connect()
-
-  // const prepared = plans.map((plan) => {
-  //   return {
-  //     name: plan.fileName,
-  //     description: plan.data.description,
-  //     originalAmount: plan.data.orgPrice,
-  //     discountedAmount: plan.data.disPrice,
-  //     extraFeatures: plan.data.extraFeatures,
-  //     packageCategories: {
-  //       create: plan.data.categories.map((category) => ({
-  //         // Convert name to lowercase and replace spaces with underscores
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   }
-  // })
-
-  // const prepared = miniPackages.map((plan) => {
-  //   return {
-  //     name: plan.fileName,
-  //     description:
-  //       "This package includes " +
-  //       plan.data.benefits.length +
-  //       " individual tests",
-  //     originalAmount: plan.data.orgPrice,
-  //     discountedAmount: plan.data.disPrice,
-  //     extraFeatures: plan.data.extraFeatures,
-  //   }
-  // })
-
-  // await prisma.miniPackage.createMany({
-  //   data: prepared,
-  //   skipDuplicates: true, // Skip duplicates based on unique constraints
-  // })
-
-  // const sliverPlan = await prisma.package.create({
-  //   data: {
-  //     name: plans[4].fileName,
-  //     description: plans[4].data.description,
-  //     originalAmount: plans[4].data.orgPrice,
-  //     discountedAmount: plans[4].data.disPrice,
-  //     extraFeatures: plans[4].data.extraFeatures,
-  //     packageCategories: {
-  //       create: plans[4].data.categories.map((category) => ({
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   },
-  // })
-
-  // const goldPlan = await prisma.package.create({
-  //   data: {
-  //     name: plans[1].fileName,
-  //     description: plans[1].data.description,
-  //     originalAmount: plans[1].data.orgPrice,
-  //     discountedAmount: plans[1].data.disPrice,
-  //     extraFeatures: plans[1].data.extraFeatures,
-  //     packageCategories: {
-  //       create: plans[1].data.categories.map((category) => ({
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   },
-  // })
-
-  // const platinumPlan = await prisma.package.create({
-  //   data: {
-  //     name: plans[2].fileName,
-  //     description: plans[2].data.description,
-  //     originalAmount: plans[2].data.orgPrice,
-  //     discountedAmount: plans[2].data.disPrice,
-  //     extraFeatures: plans[2].data.extraFeatures,
-  //     packageCategories: {
-  //       create: plans[2].data.categories.map((category) => ({
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   },
-  // })
-
-  // const diamondPlan = await prisma.package.create({
-  //   data: {
-  //     name: plans[0].fileName,
-  //     description: plans[0].data.description,
-  //     originalAmount: plans[0].data.orgPrice,
-  //     discountedAmount: plans[0].data.disPrice,
-  //     extraFeatures: plans[0].data.extraFeatures,
-  //     packageCategories: {
-  //       create: plans[0].data.categories.map((category) => ({
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   },
-  // })
-
-  // const signaturePlan = await prisma.package.create({
-  //   data: {
-  //     name: plans[3].fileName,
-  //     description: plans[3].data.description,
-  //     originalAmount: plans[3].data.orgPrice,
-  //     discountedAmount: plans[3].data.disPrice,
-  //     extraFeatures: plans[3].data.extraFeatures,
-  //     packageCategories: {
-  //       create: plans[3].data.categories.map((category) => ({
-  //         name: category.name.toLowerCase().replace(/\s+/g, "_"),
-  //         features: category.features,
-  //       })),
-  //     },
-  //   },
-  // })
-
-  // Create a package with multiple categories
-  // const adventurePackage = await prisma.package.upsert({
-  //   where: { id: "00000000-0000-0000-0000-000000000001" },
-  //   update: {},
-  //   create: {
-  //     name: "Adventure Package",
-  //     description: "An exciting adventure package",
-  //     cover: "/packages-bg.png",
-  //     originalAmount: "500",
-  //     discountedAmount: "400",
-  //     offerAmount: "20",
-  //     extraFeatures: ["Free transport", "Guided tour"],
-  //     packageCategories: {
-  //       create: [
-  //         {
-  //           name: "Hiking",
-  //           features: ["Mountain trails", "Camping gear"],
-  //         },
-  //         {
-  //           name: "Water Sports",
-  //           features: ["Kayaking", "Snorkeling"],
-  //         },
-  //       ],
-  //     },
-  //   },
-  // })
-  // const luxuryPackage = await prisma.package.upsert({
-  //   where: { id: "00000000-0000-0000-0000-000000000002" },
-  //   update: {},
-  //   create: {
-  //     name: "Luxury Package",
-  //     description: "A premium luxury experience",
-  //     cover: "/packages-bg.png",
-  //     originalAmount: "1500",
-  //     discountedAmount: "1200",
-  //     offerAmount: "30",
-  //     extraFeatures: ["VIP lounge", "Personal butler"],
-  //     packageCategories: {
-  //       create: [
-  //         {
-  //           name: "Spa & Wellness",
-  //           features: ["Full body massage", "Sauna access"],
-  //         },
-  //       ],
-  //     },
-  //   },
-  // })
-  // console.log({ adventurePackage, luxuryPackage })
-
-  console.log({
-    // sliverPlan,
-    // goldPlan,
-    // platinumPlan,
-    // diamondPlan,
-    // signaturePlan,
-  })
-}
-
-// main2()
-//   .then(async () => {
-//     await prisma.$disconnect()
-//     console.log("Seeding finished. 🌱🌱🌱")
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
-//   })

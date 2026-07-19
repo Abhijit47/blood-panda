@@ -34,6 +34,8 @@ export default [
     ]),
   ]),
 
+  route("test-payment", "routes/test-payment.tsx", { id: "test-payment" }),
+
   layout("routes/auth/layout.tsx", [
     route("login", "./routes/auth/login.tsx"),
     route("register", "./routes/auth/register.tsx"),
@@ -53,6 +55,8 @@ export default [
 
   // Save API route
   route("/api/save", "routes/api.save.ts"),
+
+  route("/api/payment/callback", "routes/api/payment/callback.ts"),
 
   layout("routes/private/layout.tsx", [
     route("cart", "routes/private/cart.tsx"),

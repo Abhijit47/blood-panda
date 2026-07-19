@@ -23,6 +23,7 @@ export type MiniPackage = {
 }
 
 export type PaymentRequestData = {
+  userId: string
   name: string
   email: string
   phone: string
@@ -32,5 +33,4 @@ export type PaymentRequestData = {
   pincode: string
   scheduleDate: string
   scheduleTime: string
-  paymentMode: "ONLINE_PAYMENT"
 }

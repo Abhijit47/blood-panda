@@ -206,7 +206,7 @@ export type AddressGroupByOutputType = {
   city: string | null
   state: string | null
   country: string | null
-  bookingId: string
+  bookingId: string | null
   createdAt: Date
   updatedAt: Date
   _count: AddressCountAggregateOutputType | null
@@ -243,10 +243,10 @@ export type AddressWhereInput = {
   city?: Prisma.StringNullableFilter<"Address"> | string | null
   state?: Prisma.StringNullableFilter<"Address"> | string | null
   country?: Prisma.StringNullableFilter<"Address"> | string | null
-  bookingId?: Prisma.UuidFilter<"Address"> | string
+  bookingId?: Prisma.UuidNullableFilter<"Address"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string
-  bookings?: Prisma.BookingListRelationFilter
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
 }
 
 export type AddressOrderByWithRelationInput = {
@@ -260,10 +260,10 @@ export type AddressOrderByWithRelationInput = {
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
-  bookingId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  bookings?: Prisma.BookingOrderByRelationAggregateInput
+  booking?: Prisma.BookingOrderByWithRelationInput
 }
 
 export type AddressWhereUniqueInput = Prisma.AtLeast<{
@@ -280,10 +280,10 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
   city?: Prisma.StringNullableFilter<"Address"> | string | null
   state?: Prisma.StringNullableFilter<"Address"> | string | null
   country?: Prisma.StringNullableFilter<"Address"> | string | null
-  bookingId?: Prisma.UuidFilter<"Address"> | string
+  bookingId?: Prisma.UuidNullableFilter<"Address"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string
-  bookings?: Prisma.BookingListRelationFilter
+  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
 }, "id">
 
 export type AddressOrderByWithAggregationInput = {
@@ -297,7 +297,7 @@ export type AddressOrderByWithAggregationInput = {
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
-  bookingId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AddressCountOrderByAggregateInput
@@ -319,7 +319,7 @@ export type AddressScalarWhereWithAggregatesInput = {
   city?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
   state?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
-  bookingId?: Prisma.UuidWithAggregatesFilter<"Address"> | string
+  bookingId?: Prisma.UuidNullableWithAggregatesFilter<"Address"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string
 }
@@ -335,10 +335,9 @@ export type AddressCreateInput = {
   city?: string | null
   state?: string | null
   country?: string | null
-  bookingId: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  bookings?: Prisma.BookingCreateNestedManyWithoutAddressInput
+  booking?: Prisma.BookingCreateNestedOneWithoutAddressesInput
 }
 
 export type AddressUncheckedCreateInput = {
@@ -352,10 +351,9 @@ export type AddressUncheckedCreateInput = {
   city?: string | null
   state?: string | null
   country?: string | null
-  bookingId: string
+  bookingId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUpdateInput = {
@@ -369,10 +367,9 @@ export type AddressUpdateInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUpdateManyWithoutAddressNestedInput
+  booking?: Prisma.BookingUpdateOneWithoutAddressesNestedInput
 }
 
 export type AddressUncheckedUpdateInput = {
@@ -386,10 +383,9 @@ export type AddressUncheckedUpdateInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateManyInput = {
@@ -403,7 +399,7 @@ export type AddressCreateManyInput = {
   city?: string | null
   state?: string | null
   country?: string | null
-  bookingId: string
+  bookingId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -419,7 +415,6 @@ export type AddressUpdateManyMutationInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -435,14 +430,9 @@ export type AddressUncheckedUpdateManyInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type AddressScalarRelationFilter = {
-  is?: Prisma.AddressWhereInput
-  isNot?: Prisma.AddressWhereInput
 }
 
 export type AddressCountOrderByAggregateInput = {
@@ -493,25 +483,63 @@ export type AddressMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type AddressCreateNestedOneWithoutBookingsInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingsInput, Prisma.AddressUncheckedCreateWithoutBookingsInput>
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingsInput
-  connect?: Prisma.AddressWhereUniqueInput
+export type AddressListRelationFilter = {
+  every?: Prisma.AddressWhereInput
+  some?: Prisma.AddressWhereInput
+  none?: Prisma.AddressWhereInput
 }
 
-export type AddressUpdateOneRequiredWithoutBookingsNestedInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingsInput, Prisma.AddressUncheckedCreateWithoutBookingsInput>
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingsInput
-  upsert?: Prisma.AddressUpsertWithoutBookingsInput
-  connect?: Prisma.AddressWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AddressUpdateToOneWithWhereWithoutBookingsInput, Prisma.AddressUpdateWithoutBookingsInput>, Prisma.AddressUncheckedUpdateWithoutBookingsInput>
+export type AddressOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type EnumAddressTypeFieldUpdateOperationsInput = {
   set?: $Enums.AddressType
 }
 
-export type AddressCreateWithoutBookingsInput = {
+export type AddressCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput> | Prisma.AddressCreateWithoutBookingInput[] | Prisma.AddressUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingInput | Prisma.AddressCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.AddressCreateManyBookingInputEnvelope
+  connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+}
+
+export type AddressUncheckedCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput> | Prisma.AddressCreateWithoutBookingInput[] | Prisma.AddressUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingInput | Prisma.AddressCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.AddressCreateManyBookingInputEnvelope
+  connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+}
+
+export type AddressUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput> | Prisma.AddressCreateWithoutBookingInput[] | Prisma.AddressUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingInput | Prisma.AddressCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutBookingInput | Prisma.AddressUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.AddressCreateManyBookingInputEnvelope
+  set?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  disconnect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  delete?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  update?: Prisma.AddressUpdateWithWhereUniqueWithoutBookingInput | Prisma.AddressUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutBookingInput | Prisma.AddressUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
+}
+
+export type AddressUncheckedUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput> | Prisma.AddressCreateWithoutBookingInput[] | Prisma.AddressUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutBookingInput | Prisma.AddressCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutBookingInput | Prisma.AddressUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.AddressCreateManyBookingInputEnvelope
+  set?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  disconnect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  delete?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
+  update?: Prisma.AddressUpdateWithWhereUniqueWithoutBookingInput | Prisma.AddressUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutBookingInput | Prisma.AddressUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
+}
+
+export type AddressCreateWithoutBookingInput = {
   id?: string
   type?: $Enums.AddressType
   location: string
@@ -522,12 +550,11 @@ export type AddressCreateWithoutBookingsInput = {
   city?: string | null
   state?: string | null
   country?: string | null
-  bookingId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type AddressUncheckedCreateWithoutBookingsInput = {
+export type AddressUncheckedCreateWithoutBookingInput = {
   id?: string
   type?: $Enums.AddressType
   location: string
@@ -538,28 +565,71 @@ export type AddressUncheckedCreateWithoutBookingsInput = {
   city?: string | null
   state?: string | null
   country?: string | null
-  bookingId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type AddressCreateOrConnectWithoutBookingsInput = {
+export type AddressCreateOrConnectWithoutBookingInput = {
   where: Prisma.AddressWhereUniqueInput
-  create: Prisma.XOR<Prisma.AddressCreateWithoutBookingsInput, Prisma.AddressUncheckedCreateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput>
 }
 
-export type AddressUpsertWithoutBookingsInput = {
-  update: Prisma.XOR<Prisma.AddressUpdateWithoutBookingsInput, Prisma.AddressUncheckedUpdateWithoutBookingsInput>
-  create: Prisma.XOR<Prisma.AddressCreateWithoutBookingsInput, Prisma.AddressUncheckedCreateWithoutBookingsInput>
-  where?: Prisma.AddressWhereInput
+export type AddressCreateManyBookingInputEnvelope = {
+  data: Prisma.AddressCreateManyBookingInput | Prisma.AddressCreateManyBookingInput[]
+  skipDuplicates?: boolean
 }
 
-export type AddressUpdateToOneWithWhereWithoutBookingsInput = {
-  where?: Prisma.AddressWhereInput
-  data: Prisma.XOR<Prisma.AddressUpdateWithoutBookingsInput, Prisma.AddressUncheckedUpdateWithoutBookingsInput>
+export type AddressUpsertWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.AddressWhereUniqueInput
+  update: Prisma.XOR<Prisma.AddressUpdateWithoutBookingInput, Prisma.AddressUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.AddressCreateWithoutBookingInput, Prisma.AddressUncheckedCreateWithoutBookingInput>
 }
 
-export type AddressUpdateWithoutBookingsInput = {
+export type AddressUpdateWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.AddressWhereUniqueInput
+  data: Prisma.XOR<Prisma.AddressUpdateWithoutBookingInput, Prisma.AddressUncheckedUpdateWithoutBookingInput>
+}
+
+export type AddressUpdateManyWithWhereWithoutBookingInput = {
+  where: Prisma.AddressScalarWhereInput
+  data: Prisma.XOR<Prisma.AddressUpdateManyMutationInput, Prisma.AddressUncheckedUpdateManyWithoutBookingInput>
+}
+
+export type AddressScalarWhereInput = {
+  AND?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
+  OR?: Prisma.AddressScalarWhereInput[]
+  NOT?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Address"> | string
+  type?: Prisma.EnumAddressTypeFilter<"Address"> | $Enums.AddressType
+  location?: Prisma.StringFilter<"Address"> | string
+  houseNo?: Prisma.StringFilter<"Address"> | string
+  landmark?: Prisma.StringNullableFilter<"Address"> | string | null
+  pinCode?: Prisma.StringFilter<"Address"> | string
+  streetAddress?: Prisma.StringNullableFilter<"Address"> | string | null
+  city?: Prisma.StringNullableFilter<"Address"> | string | null
+  state?: Prisma.StringNullableFilter<"Address"> | string | null
+  country?: Prisma.StringNullableFilter<"Address"> | string | null
+  bookingId?: Prisma.UuidNullableFilter<"Address"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string
+}
+
+export type AddressCreateManyBookingInput = {
+  id?: string
+  type?: $Enums.AddressType
+  location: string
+  houseNo: string
+  landmark?: string | null
+  pinCode: string
+  streetAddress?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AddressUpdateWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
   location?: Prisma.StringFieldUpdateOperationsInput | string
@@ -570,12 +640,11 @@ export type AddressUpdateWithoutBookingsInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AddressUncheckedUpdateWithoutBookingsInput = {
+export type AddressUncheckedUpdateWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
   location?: Prisma.StringFieldUpdateOperationsInput | string
@@ -586,40 +655,25 @@ export type AddressUncheckedUpdateWithoutBookingsInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-
-/**
- * Count Type AddressCountOutputType
- */
-
-export type AddressCountOutputType = {
-  bookings: number
+export type AddressUncheckedUpdateManyWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  houseNo?: Prisma.StringFieldUpdateOperationsInput | string
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.StringFieldUpdateOperationsInput | string
+  streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AddressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  bookings?: boolean | AddressCountOutputTypeCountBookingsArgs
-}
-
-/**
- * AddressCountOutputType without action
- */
-export type AddressCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the AddressCountOutputType
-   */
-  select?: Prisma.AddressCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * AddressCountOutputType without action
- */
-export type AddressCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BookingWhereInput
-}
 
 
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -636,8 +690,7 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   bookingId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  bookings?: boolean | Prisma.Address$bookingsArgs<ExtArgs>
-  _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -654,6 +707,7 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   bookingId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -670,6 +724,7 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   bookingId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectScalar = {
@@ -690,16 +745,19 @@ export type AddressSelectScalar = {
 
 export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "location" | "houseNo" | "landmark" | "pinCode" | "streetAddress" | "city" | "state" | "country" | "bookingId" | "createdAt" | "updatedAt", ExtArgs["result"]["address"]>
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  bookings?: boolean | Prisma.Address$bookingsArgs<ExtArgs>
-  _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
 }
-export type AddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type AddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
+}
+export type AddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  booking?: boolean | Prisma.Address$bookingArgs<ExtArgs>
+}
 
 export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Address"
   objects: {
-    bookings: Prisma.$BookingPayload<ExtArgs>[]
+    booking: Prisma.$BookingPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -712,7 +770,7 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     city: string | null
     state: string | null
     country: string | null
-    bookingId: string
+    bookingId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["address"]>
@@ -1109,7 +1167,7 @@ readonly fields: AddressFieldRefs;
  */
 export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  bookings<T extends Prisma.Address$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  booking<T extends Prisma.Address$bookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$bookingArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1406,6 +1464,10 @@ export type AddressCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.AddressCreateManyInput | Prisma.AddressCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddressIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1476,6 +1538,10 @@ export type AddressUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Addresses to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddressIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1545,9 +1611,9 @@ export type AddressDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Address.bookings
+ * Address.booking
  */
-export type Address$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Address$bookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Booking
    */
@@ -1561,11 +1627,6 @@ export type Address$bookingsArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.BookingInclude<ExtArgs> | null
   where?: Prisma.BookingWhereInput
-  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
-  cursor?: Prisma.BookingWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

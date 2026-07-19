@@ -149,7 +149,7 @@ export default function AddressStep() {
                       field.onChange(checked)
                       form.setValue(
                         "address.addressType",
-                        !checked ? "HOME" : "OFFICE",
+                        !checked ? "HOME" : "OTHER",
                         {
                           shouldValidate: true,
                           shouldDirty: true,

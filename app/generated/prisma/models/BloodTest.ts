@@ -317,7 +317,7 @@ export type BloodTestCreateInput = {
   updatedAt?: Date | string
   primaryCategory: Prisma.PrimaryCategoryCreateNestedOneWithoutTestsInput
   secondaryCategory: Prisma.SecondaryCategoryCreateNestedOneWithoutTestsInput
-  member?: Prisma.MemberCreateNestedOneWithoutPackagesInput
+  member?: Prisma.MemberCreateNestedOneWithoutTestItemsInput
 }
 
 export type BloodTestUncheckedCreateInput = {
@@ -345,7 +345,7 @@ export type BloodTestUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   primaryCategory?: Prisma.PrimaryCategoryUpdateOneRequiredWithoutTestsNestedInput
   secondaryCategory?: Prisma.SecondaryCategoryUpdateOneRequiredWithoutTestsNestedInput
-  member?: Prisma.MemberUpdateOneWithoutPackagesNestedInput
+  member?: Prisma.MemberUpdateOneWithoutTestItemsNestedInput
 }
 
 export type BloodTestUncheckedUpdateInput = {
@@ -589,7 +589,7 @@ export type BloodTestCreateWithoutPrimaryCategoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   secondaryCategory: Prisma.SecondaryCategoryCreateNestedOneWithoutTestsInput
-  member?: Prisma.MemberCreateNestedOneWithoutPackagesInput
+  member?: Prisma.MemberCreateNestedOneWithoutTestItemsInput
 }
 
 export type BloodTestUncheckedCreateWithoutPrimaryCategoryInput = {
@@ -658,7 +658,7 @@ export type BloodTestCreateWithoutSecondaryCategoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   primaryCategory: Prisma.PrimaryCategoryCreateNestedOneWithoutTestsInput
-  member?: Prisma.MemberCreateNestedOneWithoutPackagesInput
+  member?: Prisma.MemberCreateNestedOneWithoutTestItemsInput
 }
 
 export type BloodTestUncheckedCreateWithoutSecondaryCategoryInput = {
@@ -775,7 +775,7 @@ export type BloodTestUpdateWithoutPrimaryCategoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   secondaryCategory?: Prisma.SecondaryCategoryUpdateOneRequiredWithoutTestsNestedInput
-  member?: Prisma.MemberUpdateOneWithoutPackagesNestedInput
+  member?: Prisma.MemberUpdateOneWithoutTestItemsNestedInput
 }
 
 export type BloodTestUncheckedUpdateWithoutPrimaryCategoryInput = {
@@ -827,7 +827,7 @@ export type BloodTestUpdateWithoutSecondaryCategoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   primaryCategory?: Prisma.PrimaryCategoryUpdateOneRequiredWithoutTestsNestedInput
-  member?: Prisma.MemberUpdateOneWithoutPackagesNestedInput
+  member?: Prisma.MemberUpdateOneWithoutTestItemsNestedInput
 }
 
 export type BloodTestUncheckedUpdateWithoutSecondaryCategoryInput = {

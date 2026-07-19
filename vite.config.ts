@@ -7,6 +7,7 @@ import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from "vite"
 import { envOnlyMacros } from "vite-env-only"
 import devtoolsJson from "vite-plugin-devtools-json"
+import relay from "vite-plugin-relay"
 
 // export default defineConfig({
 //   resolve: { tsconfigPaths: true },
@@ -32,7 +33,18 @@ export default defineConfig((opts) => ({
     },
     cssMinify: "lightningcss", // default; can set 'esbuild' to revert
   },
-
+  // server: {
+  //   allowedHosts: ["localhost", "leonidas-caulescent-elfriede.ngrok-free.dev"],
+  //   cors: { origin: "*" },
+  //   proxy: {
+  //     "/api": {
+  //       // localAddress: "http://localhost:5173",
+  //       target: "https://leonidas-caulescent-elfriede.ngrok-free.dev",
+  //       changeOrigin: true,
+  //       // rewrite: (path) => path.replace(/^\/api/, ""),
+  //     },
+  //   },
+  // },
   resolve: { tsconfigPaths: true },
   plugins: [
     reactRouterDevTools({
@@ -60,5 +72,6 @@ export default defineConfig((opts) => ({
     //   },
     // }),
     envOnlyMacros(),
+    relay,
   ],
 }))

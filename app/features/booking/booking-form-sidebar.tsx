@@ -61,6 +61,11 @@ export default function BookingFormSidebar() {
     name: `schedule`,
   })
 
+  const watchedReviewOrderValues = useWatch({
+    control: form.control,
+    name: `reviewOrder`,
+  })
+
   function handleFinalSubmit() {
     const fakePromise = new Promise((resolve) => setTimeout(resolve, 2000))
 
@@ -76,19 +81,14 @@ export default function BookingFormSidebar() {
           error: "Failed to create booking.",
         })
       } else {
-        const paymentRequestData = {
-          name: watchedMemberValues[0].name,
-          email: watchedMemberValues[0].email,
-          phone: watchedMemberValues[0].phone,
-          amount: discountedPrice,
-          address1: watchedAddressValues.location,
-          address2: watchedAddressValues.houseNo ?? "",
-          pincode: watchedAddressValues.pincode,
-          scheduleDate: watchedScheduleValues.scheduleDate,
-          scheduleTime: watchedScheduleValues.slotTime,
-          paymentMode: watchedPaymentMode,
+        const fetcherData = {
+          memberDetails: watchedMemberValues,
+          address: watchedAddressValues,
+          schedule: watchedScheduleValues,
+          reviewOrder: watchedReviewOrderValues,
+          totalPrice: totalPrice,
         }
-        const init = fetcher.submit(paymentRequestData, {
+        const init = fetcher.submit(fetcherData, {
           method: "post",
           encType: "application/json",
           // action: "/api/payment/create-payment-request",

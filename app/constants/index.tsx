@@ -747,12 +747,6 @@ export const faqs = [
 
 export const GenderEnums = ["MALE", "FEMALE", "OTHER"] as const
 
-export const AddressTypeEnums = ["HOME", "OFFICE"] as const
-
-export const ScheduleStatusEnums = [
-  "PENDING",
-  "CONFIRMED",
-  "CANCELLED",
-] as const
+export const AddressTypeEnums = ["HOME", "OTHER"] as const
 
 export const PaymentMethodEnums = ["ONLINE_PAYMENT", "COD"] as const

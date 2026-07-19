@@ -59,13 +59,15 @@ export const ModelName = {
   PrimaryCategory: 'PrimaryCategory',
   SecondaryCategory: 'SecondaryCategory',
   BloodTest: 'BloodTest',
-  Package: 'Package',
   PackageCategory: 'PackageCategory',
+  Package: 'Package',
   MiniPackage: 'MiniPackage',
-  Booking: 'Booking',
   Member: 'Member',
   Address: 'Address',
-  Schedule: 'Schedule'
+  Schedule: 'Schedule',
+  Booking: 'Booking',
+  Payment: 'Payment',
+  WebhookLog: 'WebhookLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -197,6 +199,17 @@ export const BloodTestScalarFieldEnum = {
 export type BloodTestScalarFieldEnum = (typeof BloodTestScalarFieldEnum)[keyof typeof BloodTestScalarFieldEnum]
 
 
+export const PackageCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  features: 'features',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PackageCategoryScalarFieldEnum = (typeof PackageCategoryScalarFieldEnum)[keyof typeof PackageCategoryScalarFieldEnum]
+
+
 export const PackageScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -211,18 +224,6 @@ export const PackageScalarFieldEnum = {
 } as const
 
 export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
-
-
-export const PackageCategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  features: 'features',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  packageId: 'packageId'
-} as const
-
-export type PackageCategoryScalarFieldEnum = (typeof PackageCategoryScalarFieldEnum)[keyof typeof PackageCategoryScalarFieldEnum]
 
 
 export const MiniPackageScalarFieldEnum = {
@@ -240,20 +241,6 @@ export const MiniPackageScalarFieldEnum = {
 } as const
 
 export type MiniPackageScalarFieldEnum = (typeof MiniPackageScalarFieldEnum)[keyof typeof MiniPackageScalarFieldEnum]
-
-
-export const BookingScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  status: 'status',
-  userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  addressId: 'addressId',
-  scheduleId: 'scheduleId'
-} as const
-
-export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
 
 
 export const MemberScalarFieldEnum = {
@@ -294,7 +281,6 @@ export const ScheduleScalarFieldEnum = {
   id: 'id',
   scheduleDate: 'scheduleDate',
   slot: 'slot',
-  scheduleStatus: 'scheduleStatus',
   bookingId: 'bookingId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -303,12 +289,60 @@ export const ScheduleScalarFieldEnum = {
 export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
 
 
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  status: 'status',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  merchantOrderId: 'merchantOrderId',
+  orderId: 'orderId',
+  state: 'state',
+  amount: 'amount',
+  currency: 'currency',
+  expireAt: 'expireAt',
+  userId: 'userId',
+  bookingId: 'bookingId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const WebhookLogScalarFieldEnum = {
+  id: 'id',
+  payload: 'payload',
+  paymentId: 'paymentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -325,4 +359,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

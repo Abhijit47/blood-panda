@@ -5,6 +5,8 @@ import prisma from "./prisma"
 
 const isDev = import.meta.env.DEV
 
+const trustedOrigin = import.meta.env.VITE_BETTER_AUTH_URL
+
 export const auth = betterAuth({
   appName: "Blood Panda",
   advanced: {
@@ -51,7 +53,7 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: ["http://localhost:5173"],
+  trustedOrigins: [trustedOrigin],
 })
 
 export type Auth = typeof auth

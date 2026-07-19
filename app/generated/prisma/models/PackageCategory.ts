@@ -29,7 +29,6 @@ export type PackageCategoryMinAggregateOutputType = {
   name: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  packageId: string | null
 }
 
 export type PackageCategoryMaxAggregateOutputType = {
@@ -37,7 +36,6 @@ export type PackageCategoryMaxAggregateOutputType = {
   name: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  packageId: string | null
 }
 
 export type PackageCategoryCountAggregateOutputType = {
@@ -46,7 +44,6 @@ export type PackageCategoryCountAggregateOutputType = {
   features: number
   createdAt: number
   updatedAt: number
-  packageId: number
   _all: number
 }
 
@@ -56,7 +53,6 @@ export type PackageCategoryMinAggregateInputType = {
   name?: true
   createdAt?: true
   updatedAt?: true
-  packageId?: true
 }
 
 export type PackageCategoryMaxAggregateInputType = {
@@ -64,7 +60,6 @@ export type PackageCategoryMaxAggregateInputType = {
   name?: true
   createdAt?: true
   updatedAt?: true
-  packageId?: true
 }
 
 export type PackageCategoryCountAggregateInputType = {
@@ -73,7 +68,6 @@ export type PackageCategoryCountAggregateInputType = {
   features?: true
   createdAt?: true
   updatedAt?: true
-  packageId?: true
   _all?: true
 }
 
@@ -155,7 +149,6 @@ export type PackageCategoryGroupByOutputType = {
   features: string[]
   createdAt: Date
   updatedAt: Date
-  packageId: string
   _count: PackageCategoryCountAggregateOutputType | null
   _min: PackageCategoryMinAggregateOutputType | null
   _max: PackageCategoryMaxAggregateOutputType | null
@@ -185,8 +178,7 @@ export type PackageCategoryWhereInput = {
   features?: Prisma.StringNullableListFilter<"PackageCategory">
   createdAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
-  packageId?: Prisma.UuidFilter<"PackageCategory"> | string
-  package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
+  packages?: Prisma.PackageListRelationFilter
 }
 
 export type PackageCategoryOrderByWithRelationInput = {
@@ -195,22 +187,20 @@ export type PackageCategoryOrderByWithRelationInput = {
   features?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  packageId?: Prisma.SortOrder
-  package?: Prisma.PackageOrderByWithRelationInput
+  packages?: Prisma.PackageOrderByRelationAggregateInput
 }
 
 export type PackageCategoryWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.PackageCategoryWhereInput | Prisma.PackageCategoryWhereInput[]
   OR?: Prisma.PackageCategoryWhereInput[]
   NOT?: Prisma.PackageCategoryWhereInput | Prisma.PackageCategoryWhereInput[]
-  name?: Prisma.StringFilter<"PackageCategory"> | string
   features?: Prisma.StringNullableListFilter<"PackageCategory">
   createdAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
-  packageId?: Prisma.UuidFilter<"PackageCategory"> | string
-  package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
-}, "id">
+  packages?: Prisma.PackageListRelationFilter
+}, "id" | "name">
 
 export type PackageCategoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -218,7 +208,6 @@ export type PackageCategoryOrderByWithAggregationInput = {
   features?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  packageId?: Prisma.SortOrder
   _count?: Prisma.PackageCategoryCountOrderByAggregateInput
   _max?: Prisma.PackageCategoryMaxOrderByAggregateInput
   _min?: Prisma.PackageCategoryMinOrderByAggregateInput
@@ -233,7 +222,6 @@ export type PackageCategoryScalarWhereWithAggregatesInput = {
   features?: Prisma.StringNullableListFilter<"PackageCategory">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PackageCategory"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PackageCategory"> | Date | string
-  packageId?: Prisma.UuidWithAggregatesFilter<"PackageCategory"> | string
 }
 
 export type PackageCategoryCreateInput = {
@@ -242,7 +230,7 @@ export type PackageCategoryCreateInput = {
   features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  package: Prisma.PackageCreateNestedOneWithoutPackageCategoriesInput
+  packages?: Prisma.PackageCreateNestedManyWithoutPackageCategoriesInput
 }
 
 export type PackageCategoryUncheckedCreateInput = {
@@ -251,7 +239,7 @@ export type PackageCategoryUncheckedCreateInput = {
   features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  packageId: string
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutPackageCategoriesInput
 }
 
 export type PackageCategoryUpdateInput = {
@@ -260,7 +248,7 @@ export type PackageCategoryUpdateInput = {
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  package?: Prisma.PackageUpdateOneRequiredWithoutPackageCategoriesNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutPackageCategoriesNestedInput
 }
 
 export type PackageCategoryUncheckedUpdateInput = {
@@ -269,7 +257,7 @@ export type PackageCategoryUncheckedUpdateInput = {
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packageId?: Prisma.StringFieldUpdateOperationsInput | string
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutPackageCategoriesNestedInput
 }
 
 export type PackageCategoryCreateManyInput = {
@@ -278,7 +266,6 @@ export type PackageCategoryCreateManyInput = {
   features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  packageId: string
 }
 
 export type PackageCategoryUpdateManyMutationInput = {
@@ -295,7 +282,28 @@ export type PackageCategoryUncheckedUpdateManyInput = {
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packageId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type PackageCategoryCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  features?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type PackageCategoryMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type PackageCategoryMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PackageCategoryListRelationFilter = {
@@ -308,73 +316,6 @@ export type PackageCategoryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type PackageCategoryCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  features?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  packageId?: Prisma.SortOrder
-}
-
-export type PackageCategoryMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  packageId?: Prisma.SortOrder
-}
-
-export type PackageCategoryMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  packageId?: Prisma.SortOrder
-}
-
-export type PackageCategoryCreateNestedManyWithoutPackageInput = {
-  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput> | Prisma.PackageCategoryCreateWithoutPackageInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackageInput[]
-  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackageInput | Prisma.PackageCategoryCreateOrConnectWithoutPackageInput[]
-  createMany?: Prisma.PackageCategoryCreateManyPackageInputEnvelope
-  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-}
-
-export type PackageCategoryUncheckedCreateNestedManyWithoutPackageInput = {
-  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput> | Prisma.PackageCategoryCreateWithoutPackageInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackageInput[]
-  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackageInput | Prisma.PackageCategoryCreateOrConnectWithoutPackageInput[]
-  createMany?: Prisma.PackageCategoryCreateManyPackageInputEnvelope
-  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-}
-
-export type PackageCategoryUpdateManyWithoutPackageNestedInput = {
-  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput> | Prisma.PackageCategoryCreateWithoutPackageInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackageInput[]
-  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackageInput | Prisma.PackageCategoryCreateOrConnectWithoutPackageInput[]
-  upsert?: Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackageInput | Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackageInput[]
-  createMany?: Prisma.PackageCategoryCreateManyPackageInputEnvelope
-  set?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  disconnect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  delete?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  update?: Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackageInput | Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackageInput[]
-  updateMany?: Prisma.PackageCategoryUpdateManyWithWhereWithoutPackageInput | Prisma.PackageCategoryUpdateManyWithWhereWithoutPackageInput[]
-  deleteMany?: Prisma.PackageCategoryScalarWhereInput | Prisma.PackageCategoryScalarWhereInput[]
-}
-
-export type PackageCategoryUncheckedUpdateManyWithoutPackageNestedInput = {
-  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput> | Prisma.PackageCategoryCreateWithoutPackageInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackageInput[]
-  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackageInput | Prisma.PackageCategoryCreateOrConnectWithoutPackageInput[]
-  upsert?: Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackageInput | Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackageInput[]
-  createMany?: Prisma.PackageCategoryCreateManyPackageInputEnvelope
-  set?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  disconnect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  delete?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
-  update?: Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackageInput | Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackageInput[]
-  updateMany?: Prisma.PackageCategoryUpdateManyWithWhereWithoutPackageInput | Prisma.PackageCategoryUpdateManyWithWhereWithoutPackageInput[]
-  deleteMany?: Prisma.PackageCategoryScalarWhereInput | Prisma.PackageCategoryScalarWhereInput[]
-}
-
 export type PackageCategoryCreatefeaturesInput = {
   set: string[]
 }
@@ -384,7 +325,45 @@ export type PackageCategoryUpdatefeaturesInput = {
   push?: string | string[]
 }
 
-export type PackageCategoryCreateWithoutPackageInput = {
+export type PackageCategoryCreateNestedManyWithoutPackagesInput = {
+  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput> | Prisma.PackageCategoryCreateWithoutPackagesInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput[]
+  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput | Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput[]
+  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+}
+
+export type PackageCategoryUncheckedCreateNestedManyWithoutPackagesInput = {
+  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput> | Prisma.PackageCategoryCreateWithoutPackagesInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput[]
+  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput | Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput[]
+  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+}
+
+export type PackageCategoryUpdateManyWithoutPackagesNestedInput = {
+  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput> | Prisma.PackageCategoryCreateWithoutPackagesInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput[]
+  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput | Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput[]
+  upsert?: Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackagesInput | Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackagesInput[]
+  set?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  disconnect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  delete?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  update?: Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackagesInput | Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackagesInput[]
+  updateMany?: Prisma.PackageCategoryUpdateManyWithWhereWithoutPackagesInput | Prisma.PackageCategoryUpdateManyWithWhereWithoutPackagesInput[]
+  deleteMany?: Prisma.PackageCategoryScalarWhereInput | Prisma.PackageCategoryScalarWhereInput[]
+}
+
+export type PackageCategoryUncheckedUpdateManyWithoutPackagesNestedInput = {
+  create?: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput> | Prisma.PackageCategoryCreateWithoutPackagesInput[] | Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput[]
+  connectOrCreate?: Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput | Prisma.PackageCategoryCreateOrConnectWithoutPackagesInput[]
+  upsert?: Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackagesInput | Prisma.PackageCategoryUpsertWithWhereUniqueWithoutPackagesInput[]
+  set?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  disconnect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  delete?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  connect?: Prisma.PackageCategoryWhereUniqueInput | Prisma.PackageCategoryWhereUniqueInput[]
+  update?: Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackagesInput | Prisma.PackageCategoryUpdateWithWhereUniqueWithoutPackagesInput[]
+  updateMany?: Prisma.PackageCategoryUpdateManyWithWhereWithoutPackagesInput | Prisma.PackageCategoryUpdateManyWithWhereWithoutPackagesInput[]
+  deleteMany?: Prisma.PackageCategoryScalarWhereInput | Prisma.PackageCategoryScalarWhereInput[]
+}
+
+export type PackageCategoryCreateWithoutPackagesInput = {
   id?: string
   name: string
   features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
@@ -392,7 +371,7 @@ export type PackageCategoryCreateWithoutPackageInput = {
   updatedAt?: Date | string
 }
 
-export type PackageCategoryUncheckedCreateWithoutPackageInput = {
+export type PackageCategoryUncheckedCreateWithoutPackagesInput = {
   id?: string
   name: string
   features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
@@ -400,30 +379,25 @@ export type PackageCategoryUncheckedCreateWithoutPackageInput = {
   updatedAt?: Date | string
 }
 
-export type PackageCategoryCreateOrConnectWithoutPackageInput = {
+export type PackageCategoryCreateOrConnectWithoutPackagesInput = {
   where: Prisma.PackageCategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput>
+  create: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput>
 }
 
-export type PackageCategoryCreateManyPackageInputEnvelope = {
-  data: Prisma.PackageCategoryCreateManyPackageInput | Prisma.PackageCategoryCreateManyPackageInput[]
-  skipDuplicates?: boolean
-}
-
-export type PackageCategoryUpsertWithWhereUniqueWithoutPackageInput = {
+export type PackageCategoryUpsertWithWhereUniqueWithoutPackagesInput = {
   where: Prisma.PackageCategoryWhereUniqueInput
-  update: Prisma.XOR<Prisma.PackageCategoryUpdateWithoutPackageInput, Prisma.PackageCategoryUncheckedUpdateWithoutPackageInput>
-  create: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackageInput, Prisma.PackageCategoryUncheckedCreateWithoutPackageInput>
+  update: Prisma.XOR<Prisma.PackageCategoryUpdateWithoutPackagesInput, Prisma.PackageCategoryUncheckedUpdateWithoutPackagesInput>
+  create: Prisma.XOR<Prisma.PackageCategoryCreateWithoutPackagesInput, Prisma.PackageCategoryUncheckedCreateWithoutPackagesInput>
 }
 
-export type PackageCategoryUpdateWithWhereUniqueWithoutPackageInput = {
+export type PackageCategoryUpdateWithWhereUniqueWithoutPackagesInput = {
   where: Prisma.PackageCategoryWhereUniqueInput
-  data: Prisma.XOR<Prisma.PackageCategoryUpdateWithoutPackageInput, Prisma.PackageCategoryUncheckedUpdateWithoutPackageInput>
+  data: Prisma.XOR<Prisma.PackageCategoryUpdateWithoutPackagesInput, Prisma.PackageCategoryUncheckedUpdateWithoutPackagesInput>
 }
 
-export type PackageCategoryUpdateManyWithWhereWithoutPackageInput = {
+export type PackageCategoryUpdateManyWithWhereWithoutPackagesInput = {
   where: Prisma.PackageCategoryScalarWhereInput
-  data: Prisma.XOR<Prisma.PackageCategoryUpdateManyMutationInput, Prisma.PackageCategoryUncheckedUpdateManyWithoutPackageInput>
+  data: Prisma.XOR<Prisma.PackageCategoryUpdateManyMutationInput, Prisma.PackageCategoryUncheckedUpdateManyWithoutPackagesInput>
 }
 
 export type PackageCategoryScalarWhereInput = {
@@ -435,18 +409,9 @@ export type PackageCategoryScalarWhereInput = {
   features?: Prisma.StringNullableListFilter<"PackageCategory">
   createdAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PackageCategory"> | Date | string
-  packageId?: Prisma.UuidFilter<"PackageCategory"> | string
 }
 
-export type PackageCategoryCreateManyPackageInput = {
-  id?: string
-  name: string
-  features?: Prisma.PackageCategoryCreatefeaturesInput | string[]
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PackageCategoryUpdateWithoutPackageInput = {
+export type PackageCategoryUpdateWithoutPackagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
@@ -454,7 +419,7 @@ export type PackageCategoryUpdateWithoutPackageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PackageCategoryUncheckedUpdateWithoutPackageInput = {
+export type PackageCategoryUncheckedUpdateWithoutPackagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
@@ -462,7 +427,7 @@ export type PackageCategoryUncheckedUpdateWithoutPackageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PackageCategoryUncheckedUpdateManyWithoutPackageInput = {
+export type PackageCategoryUncheckedUpdateManyWithoutPackagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PackageCategoryUpdatefeaturesInput | string[]
@@ -470,6 +435,35 @@ export type PackageCategoryUncheckedUpdateManyWithoutPackageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type PackageCategoryCountOutputType
+ */
+
+export type PackageCategoryCountOutputType = {
+  packages: number
+}
+
+export type PackageCategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  packages?: boolean | PackageCategoryCountOutputTypeCountPackagesArgs
+}
+
+/**
+ * PackageCategoryCountOutputType without action
+ */
+export type PackageCategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PackageCategoryCountOutputType
+   */
+  select?: Prisma.PackageCategoryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PackageCategoryCountOutputType without action
+ */
+export type PackageCategoryCountOutputTypeCountPackagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PackageWhereInput
+}
 
 
 export type PackageCategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -478,8 +472,8 @@ export type PackageCategorySelect<ExtArgs extends runtime.Types.Extensions.Inter
   features?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  packageId?: boolean
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
+  packages?: boolean | Prisma.PackageCategory$packagesArgs<ExtArgs>
+  _count?: boolean | Prisma.PackageCategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["packageCategory"]>
 
 export type PackageCategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -488,8 +482,6 @@ export type PackageCategorySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   features?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  packageId?: boolean
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["packageCategory"]>
 
 export type PackageCategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -498,8 +490,6 @@ export type PackageCategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   features?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  packageId?: boolean
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["packageCategory"]>
 
 export type PackageCategorySelectScalar = {
@@ -508,24 +498,20 @@ export type PackageCategorySelectScalar = {
   features?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  packageId?: boolean
 }
 
-export type PackageCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "features" | "createdAt" | "updatedAt" | "packageId", ExtArgs["result"]["packageCategory"]>
+export type PackageCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "features" | "createdAt" | "updatedAt", ExtArgs["result"]["packageCategory"]>
 export type PackageCategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
+  packages?: boolean | Prisma.PackageCategory$packagesArgs<ExtArgs>
+  _count?: boolean | Prisma.PackageCategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type PackageCategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
-}
-export type PackageCategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
-}
+export type PackageCategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type PackageCategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $PackageCategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PackageCategory"
   objects: {
-    package: Prisma.$PackagePayload<ExtArgs>
+    packages: Prisma.$PackagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -533,7 +519,6 @@ export type $PackageCategoryPayload<ExtArgs extends runtime.Types.Extensions.Int
     features: string[]
     createdAt: Date
     updatedAt: Date
-    packageId: string
   }, ExtArgs["result"]["packageCategory"]>
   composites: {}
 }
@@ -928,7 +913,7 @@ readonly fields: PackageCategoryFieldRefs;
  */
 export interface Prisma__PackageCategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  package<T extends Prisma.PackageDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PackageDefaultArgs<ExtArgs>>): Prisma.Prisma__PackageClient<runtime.Types.Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  packages<T extends Prisma.PackageCategory$packagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PackageCategory$packagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -963,7 +948,6 @@ export interface PackageCategoryFieldRefs {
   readonly features: Prisma.FieldRef<"PackageCategory", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"PackageCategory", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PackageCategory", 'DateTime'>
-  readonly packageId: Prisma.FieldRef<"PackageCategory", 'String'>
 }
     
 
@@ -1218,10 +1202,6 @@ export type PackageCategoryCreateManyAndReturnArgs<ExtArgs extends runtime.Types
    */
   data: Prisma.PackageCategoryCreateManyInput | Prisma.PackageCategoryCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PackageCategoryIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1292,10 +1272,6 @@ export type PackageCategoryUpdateManyAndReturnArgs<ExtArgs extends runtime.Types
    * Limit how many PackageCategories to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PackageCategoryIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1362,6 +1338,30 @@ export type PackageCategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many PackageCategories to delete.
    */
   limit?: number
+}
+
+/**
+ * PackageCategory.packages
+ */
+export type PackageCategory$packagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Package
+   */
+  select?: Prisma.PackageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Package
+   */
+  omit?: Prisma.PackageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PackageInclude<ExtArgs> | null
+  where?: Prisma.PackageWhereInput
+  orderBy?: Prisma.PackageOrderByWithRelationInput | Prisma.PackageOrderByWithRelationInput[]
+  cursor?: Prisma.PackageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PackageScalarFieldEnum | Prisma.PackageScalarFieldEnum[]
 }
 
 /**
